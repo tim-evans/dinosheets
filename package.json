@@ -1,0 +1,32 @@
+{
+  "name": "dinosheets",
+  "version": "0.0.0",
+  "description": "Dynamic Stylesheets for browsers",
+  "main": "dist/dinosheets.js",
+  "scripts": {
+    "start": "broccoli serve",
+    "build": "rm -rf dist && broccoli build dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tim-evans/dinosheets.git"
+  },
+  "author": "Tim Evans <tim.c.evans@me.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tim-evans/dinosheets/issues"
+  },
+  "homepage": "https://github.com/tim-evans/dinosheets",
+  "devDependencies": {
+    "babel": "^5.0.0",
+    "broccoli": "^0.16.2",
+    "broccoli-babel-transpiler": "^5.0.0",
+    "broccoli-concat": "^0.0.13",
+    "broccoli-funnel": "^0.2.3",
+    "broccoli-merge-trees": "^0.2.1",
+    "chai": "^2.2.0",
+    "glob": "^5.0.3",
+    "mocha": "^2.2.4",
+    "mocha-jshint": "^1.0.0"
+  }
+}

@@ -1,0 +1,8 @@
+tests/
+tmp/
+lib/
+
+.npmignore
+**/.gitkeep
+Brocfile.js
+*~
