@@ -1,0 +1,25 @@
+{
+  "name": "dinosheets",
+  "version": "0.0.0",
+  "homepage": "https://github.com/tim-evans/dinosheets",
+  "authors": [
+    "Tim Evans <tim.c.evans@me.com>"
+  ],
+  "description": "Dynamic stylesheets",
+  "main": "dist/index.js",
+  "keywords": [
+    "css"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "qunit": "~1.18.0",
+    "loader.js": "~3.2.1"
+  }
+}

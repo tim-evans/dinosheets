@@ -5,7 +5,8 @@
   "main": "dist/dinosheets.js",
   "scripts": {
     "start": "broccoli serve",
-    "build": "rm -rf dist && broccoli build dist"
+    "build": "rm -rf dist && broccoli build dist",
+    "test": "rm -rf build && ENV=test broccoli build build; testem ci; rm -rf build"
   },
   "repository": {
     "type": "git",
@@ -24,9 +25,6 @@
     "broccoli-concat": "^0.0.13",
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "^0.2.1",
-    "chai": "^2.2.0",
-    "glob": "^5.0.3",
-    "mocha": "^2.2.4",
-    "mocha-jshint": "^1.0.0"
+    "testem": "^0.8.3"
   }
 }
