@@ -31,19 +31,36 @@ module('StyleSheetShim', {
 });
 
 test('it returns a list of rules for the stylesheet', function (assert) {
-  styleSheet.insertRule('body', {
+  styleSheet.appendRule('body', {
     backgroundColor: 'green'
-  }, 0);
-  styleSheet.insertRule('p', {
+  });
+  styleSheet.appendRule('p', {
     color: 'white'
-  }, 0);
+  });
   assert.equal(styleSheet.rules().length, 2);
 });
 
 test('inserting a rule has the desired effect on the page', function (assert) {
-  styleSheet.insertRule('body', {
+  styleSheet.appendRule('body', {
     fontSize: '200px'
-  }, 0);
+  });
   let styles = getStyles(document.body);
   assert.equal(styles.fontSize, '200px');
+});
+
+test('rules are returned in order of insertion', function (assert) {
+  styleSheet.appendRule('body', {
+    fontSize: '200px'
+  });
+  styleSheet.appendRule('p', {
+    display: 'none'
+  });
+  styleSheet.appendRule('em', {
+    color: 'green'
+  });
+
+  let rules = styleSheet.rules();
+  assert.equal(rules.item(0).selectorText, 'body');
+  assert.equal(rules.item(1).selectorText, 'p');
+  assert.equal(rules.item(2).selectorText, 'em');
 });
