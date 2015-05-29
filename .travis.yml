@@ -11,12 +11,13 @@ before_install:
 - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
 - npm config set spin false
 - npm install -g npm@^2
-install:
 - npm install -g bower
+- npm install -g saucie
+install:
 - npm install
 - bower install
 script:
-- npm ci
+- npm test
 env:
   global:
     - secure: dPuW2+CQVh4skiSVkWjFLpv395ONJznqqES008iO2istxtUZG/UporcW8dbzPbdXEoQDzeYb/cxHYP9oF5so2E6AGHklXJGCQLFJ4wgfdP5amL4NmP18RqyE0oRHcetSNhn4xN6Kb93vArYfS6fXBnkrMddlwYLkO1HpGoLyQuDwUTfHwC3Y10Mu634QWsXm5InGfxGv8mbs1E3hTCt3HfdQl8nqgh1EwVWMnXW0Al2Wruie/q5zZ5oZy+d267zQ1qRFRvQTnmpj1klpRCEwqg5QHAhfr1QmCTkgvORuiwC7/HGZKhSkpxI/BqA8LXWrdhsoRbBQ2NHmWyU1QtpXKOvzgoSh8CxKjDuIDKpjZJHB7mLipQO4qcfjW1QgJs3eaVRMtWindrJ8qmwA2Jj/bADvJg4zrqbmDMt5jJ0hikd5vKqiiZqeBQ02/ARB1bw4RwBNtDaujfcJqfGNOj/aG8E5ivC1A2GqH2xChHtyMPbgZoEJkD2NFa033/oHGUPpsyjNVqmtgP9XQlenyhk/Cv5BbNt7VDoHCvR5TA8zKuWhZS/DN9Z9r90yuXHYdVaMEU6dzgMkGrlT+y0PmxTn4NY3INqwka3Rt/LN20w9qVtXmMFRy/CogkAq4AIFqFj9eUKEAx5ScdiKgunLEZ1a5u3X3zzqaItjal7Vwe9blcc=
