@@ -10,6 +10,7 @@ const transpile = function (tree) {
     stage: 0,
     moduleIds: true,
     modules: 'amd',
+    loose: ['es6.classes', 'es6.modules'],
 
     // Transforms /index.js files to use their containing directory name
     getModuleId: function (name) {
