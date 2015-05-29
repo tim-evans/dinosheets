@@ -13,6 +13,7 @@ before_install:
 - npm install -g npm@^2
 - npm install -g bower
 - npm install -g saucie
+- npm install -g broccoli-cli
 install:
 - npm install
 - bower install
