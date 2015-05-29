@@ -11,7 +11,7 @@
       "protocol": "tap"
     },
     "SL_IE_9": {
-      "command": "saucie -b 'internet explorer' -v '9' -p 'Windows XP' --timeout=540",
+      "command": "saucie -b 'internet explorer' -v '9' -p 'Windows 7' --timeout=540",
       "protocol": "tap"
     },
     "SL_IE_10": {
@@ -24,7 +24,8 @@
     }
   },
   "launch_in_dev": [
-    "PhantomJS"
+    "PhantomJS",
+    "Chrome"
   ],
   "launch_in_ci": [
     "PhantomJS",
