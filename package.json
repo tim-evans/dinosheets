@@ -6,7 +6,7 @@
   "scripts": {
     "start": "broccoli serve",
     "build": "rm -rf dist && broccoli build dist",
-    "test": "rm -rf build && ENV=test broccoli build build; testem ci; rm -rf build"
+    "test": "rm -rf build && ENV=test broccoli build build; testem ci --port 8080"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "broccoli-concat": "^0.0.13",
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "^0.2.1",
+    "saucie": "^0.1.4",
     "testem": "^0.8.3"
   }
 }

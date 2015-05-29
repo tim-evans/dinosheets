@@ -1,0 +1,23 @@
+language: node_js
+node_js:
+- '0.12'
+sudo: false
+cache:
+  directories:
+  - node_modules
+addons:
+  sauce_connect: true
+before_install:
+- export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
+- npm config set spin false
+- npm install -g npm@^2
+install:
+- npm install -g bower
+- npm install
+- bower install
+script:
+- npm ci
+env:
+  global:
+    - secure: dPuW2+CQVh4skiSVkWjFLpv395ONJznqqES008iO2istxtUZG/UporcW8dbzPbdXEoQDzeYb/cxHYP9oF5so2E6AGHklXJGCQLFJ4wgfdP5amL4NmP18RqyE0oRHcetSNhn4xN6Kb93vArYfS6fXBnkrMddlwYLkO1HpGoLyQuDwUTfHwC3Y10Mu634QWsXm5InGfxGv8mbs1E3hTCt3HfdQl8nqgh1EwVWMnXW0Al2Wruie/q5zZ5oZy+d267zQ1qRFRvQTnmpj1klpRCEwqg5QHAhfr1QmCTkgvORuiwC7/HGZKhSkpxI/BqA8LXWrdhsoRbBQ2NHmWyU1QtpXKOvzgoSh8CxKjDuIDKpjZJHB7mLipQO4qcfjW1QgJs3eaVRMtWindrJ8qmwA2Jj/bADvJg4zrqbmDMt5jJ0hikd5vKqiiZqeBQ02/ARB1bw4RwBNtDaujfcJqfGNOj/aG8E5ivC1A2GqH2xChHtyMPbgZoEJkD2NFa033/oHGUPpsyjNVqmtgP9XQlenyhk/Cv5BbNt7VDoHCvR5TA8zKuWhZS/DN9Z9r90yuXHYdVaMEU6dzgMkGrlT+y0PmxTn4NY3INqwka3Rt/LN20w9qVtXmMFRy/CogkAq4AIFqFj9eUKEAx5ScdiKgunLEZ1a5u3X3zzqaItjal7Vwe9blcc=
+    - secure: VIXIap9IBXaWgRj61YUf5R9tab6aJPtwlVuq4VmgSXmf2jsofYoyn54AQwY/yM0pLF39P+Ai4BDgASjBOpLeeiTHwV+17XhsMD2GA/gy08+gkn1iTv1Hnp9IERO6kYaFnBWBnZcVgFgcEuXkz1l6x6qoGp9897qEXMhoc/XwM1auKf+dPnLYcguYbOj5dAZs8HbFcnNDJ7d34x5DcDIRBuI6jb/rWdkodSuXTeSa03X/pMTejdzGRyjsU3D2PTde51rJ65vo+oU55xYWDsdU5G0TnTYI73zEmUAZBZ51t7S5z6bErbAJOcuSJI8DNWrRVj2qh+4xJ/QyuLqfno+tSRUb/66SkqTANadl0fZQYzp9BHtH9rwD/jJ9WQJGR2mSWtT1Ee4WzaOgymdTnmAaBZOgU+GgZuD/eIXHsgDSEk5JEyJF06m1m+A4lVdCCeY3SKrNvCk4Mfahn0XzgdszbscXxJHXYRGft21e89VPe+n2xxp3MJt/zvZ5+UDHyyAxKl98azAGDBDMWGOqq1cPxzjCbeXdr08HqBY2WGHQSy0LmStBvR7z2pCjGhFxqVqSsnOMgCdD/pduWXsh8L2UjCpiBqy0XcTLSQbEyzuMFsYPEq19Ckmr4YbOuR+eFJq/sF/YweAJCjKGTTZlc4lF2ldh7T6lqIUlPZvlpdPDgkA=

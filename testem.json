@@ -1,11 +1,37 @@
 {
   "framework": "qunit",
   "test_page": "build/index.html",
+  "launchers": {
+    "SL_Chrome": {
+      "command": "saucie -b 'chrome' -p 'OS X 10.6' --timeout=540",
+      "protocol": "tap"
+    },
+    "SL_IE_8": {
+      "command": "saucie -b 'internet explorer' -v '8' -p 'Windows XP' --timeout=540",
+      "protocol": "tap"
+    },
+    "SL_IE_9": {
+      "command": "saucie -b 'internet explorer' -v '9' -p 'Windows XP' --timeout=540",
+      "protocol": "tap"
+    },
+    "SL_IE_10": {
+      "command": "saucie -b 'internet explorer' -v '10' -p 'Windows 7' --timeout=540",
+      "protocol": "tap"
+    },
+    "SL_IE_11": {
+      "command": "saucie -b 'internet explorer' -v '11' -p 'Windows 7' --timeout=540",
+      "protocol": "tap"
+    }
+  },
   "launch_in_dev": [
-    "PhantomJS",
-    "Chrome"
+    "PhantomJS"
   ],
   "launch_in_ci": [
-    "PhantomJS"
+    "PhantomJS",
+    "SL_Chrome",
+    "SL_IE_8",
+    "SL_IE_9",
+    "SL_IE_10",
+    "SL_IE_11"
   ]
 }
