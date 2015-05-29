@@ -60,7 +60,7 @@ test('rules are returned in order of insertion', function (assert) {
   });
 
   let rules = styleSheet.rules();
-  assert.equal(rules.item(0).selectorText, 'body');
-  assert.equal(rules.item(1).selectorText, 'p');
-  assert.equal(rules.item(2).selectorText, 'em');
+  assert.equal(rules[0].selectorText, 'body');
+  assert.equal(rules[1].selectorText, 'p');
+  assert.equal(rules[2].selectorText, 'em');
 });
