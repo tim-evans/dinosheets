@@ -13,6 +13,7 @@ function getStyles(element) {
 
 function cssText(rule) {
   let style = rule.style.cssText;
+  style = style.replace(/\s*$/, '');
   if (style.charAt(style.length - 1) !== ';') {
     style = style + ';';
   }
@@ -85,11 +86,11 @@ test('ruleFor returns the correct rules', function (assert) {
   });
 
   let rule = styleSheet.ruleFor('body').rule;
-  assert.equal(cssText(rule), 'font-size: 200px')
+  assert.equal(cssText(rule), 'font-size: 200px;')
   rule = styleSheet.ruleFor('p').rule.style;
-  assert.equal(cssText(rule), 'display: none');
+  assert.equal(cssText(rule), 'display: none;');
   rule = styleSheet.ruleFor('em').rule.style;
-  assert.equal(cssText(rule), 'font-weight: bold');
+  assert.equal(cssText(rule), 'font-weight: bold;');
 });
 
 test('rules can be updated', function (assert) {
