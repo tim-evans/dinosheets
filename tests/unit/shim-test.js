@@ -64,3 +64,38 @@ test('rules are returned in order of insertion', function (assert) {
   assert.equal(rules[1].selectorText.toLowerCase(), 'p');
   assert.equal(rules[2].selectorText.toLowerCase(), 'em');
 });
+
+test('ruleFor returns the correct rules', function (assert) {
+  styleSheet.appendRule('body', {
+    fontSize: '200px'
+  });
+  styleSheet.appendRule('p', {
+    display: 'none'
+  });
+  styleSheet.appendRule('em', {
+    fontWeight: 'bold'
+  });
+
+  rule = styleSheet.ruleFor('body').rule;
+  assert.equal(rule.cssText, 'font-size: 200px');
+  rule = styleSheet.ruleFor('p').rule;
+  assert.equal(rule.cssText, 'display: none');
+  rule = styleSheet.ruleFor('em').rule;
+  assert.equal(rule.cssText, 'font-weight: bold');
+});
+
+test('rules can be updated', function (assert) {
+  styleSheet.appendRule('body', {
+    fontSize: '200px'
+  });
+
+  let styles = getStyles(document.body);
+  assert.equal(styles.fontSize, '200px');
+
+  styleSheet.updateRule('body', {
+    fontSize: '10px'
+  });
+
+  styles = getStyles(document.body);
+  assert.equal(styles.fontSize, '10px');
+});
