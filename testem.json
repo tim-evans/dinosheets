@@ -3,35 +3,35 @@
   "test_page": "build/index.html",
   "launchers": {
     "SL_Chrome": {
-      "command": "saucie -b 'chrome' -p 'OS X 10.6' --timeout=540",
+      "command": "saucie -b 'chrome' -p 'OS X 10.6' --timeout=540 -n Chrome",
       "protocol": "tap"
     },
     "SL_Firefox": {
-      "command": "saucie -b 'firefox' -v '34' -p 'OS X 10.6' --timeout=540",
+      "command": "saucie -b 'firefox' -v '34' -p 'OS X 10.6' --timeout=540 -n 'Firefox 34'",
       "protocol": "tap"
     },
     "SL_Safari": {
-      "command": "saucie -b 'safari' -v '8' -p 'OS X 10.6' --timeout=540",
+      "command": "saucie -b 'safari' -v '8' --timeout=540 -n 'Safari 8'",
       "protocol": "tap"
     },
     "SL_Safari_7": {
-      "command": "saucie -b 'safari' -v '7' -p 'OS X 10.6' --timeout=540",
+      "command": "saucie -b 'safari' -v '7' --timeout=540 -n 'Safari 7'",
       "protocol": "tap"
     },
     "SL_IE_8": {
-      "command": "saucie -b 'internet explorer' -v '8' -p 'Windows XP' --timeout=540",
+      "command": "saucie -b 'internet explorer' -v '8' -p 'Windows XP' --timeout=540 -n 'IE 8'",
       "protocol": "tap"
     },
     "SL_IE_9": {
-      "command": "saucie -b 'internet explorer' -v '9' -p 'Windows 7' --timeout=540",
+      "command": "saucie -b 'internet explorer' -v '9' -p 'Windows 7' --timeout=540 -n 'IE 9'",
       "protocol": "tap"
     },
     "SL_IE_10": {
-      "command": "saucie -b 'internet explorer' -v '10' -p 'Windows 7' --timeout=540",
+      "command": "saucie -b 'internet explorer' -v '10' -p 'Windows 7' --timeout=54 -n 'IE 10'",
       "protocol": "tap"
     },
     "SL_IE_11": {
-      "command": "saucie -b 'internet explorer' -v '11' -p 'Windows 7' --timeout=540",
+      "command": "saucie -b 'internet explorer' -v '11' -p 'Windows 7' --timeout=540 -n 'IE 11'",
       "protocol": "tap"
     }
   },
