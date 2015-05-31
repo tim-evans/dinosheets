@@ -108,3 +108,36 @@ test('rules can be updated', function (assert) {
   styles = getStyles(document.body);
   assert.equal(styles.fontSize, '10px');
 });
+
+test('rules can be deleted', function (assert) {
+  styleSheet.appendRule('body', {
+    fontSize: '200px'
+  });
+
+  styleSheet.deleteRule('body');
+
+  let rule = styleSheet.ruleFor('body');
+  assert.equal(rule, null);
+});
+
+test('toString returns the serialized stylesheet', function (assert) {
+  styleSheet.appendRule('body', {
+    fontSize: '200px'
+  });
+  styleSheet.appendRule('.hello-world', {
+    width: '200px',
+    height: '100px',
+    border: '1px solid'
+  });
+
+  assert.equal(styleSheet.toString(),
+               ['body {',
+                '  font-size: 200px;',
+                '}',
+                '',
+                '.hello-world {',
+                '  border: 1px solid;',
+                '  height: 100px;',
+                '  width: 200px;',
+                '}'].join('\n'));
+});
