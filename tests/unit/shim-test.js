@@ -76,12 +76,12 @@ test('ruleFor returns the correct rules', function (assert) {
     fontWeight: 'bold'
   });
 
-  rule = styleSheet.ruleFor('body').rule;
-  assert.equal(rule.cssText, 'font-size: 200px');
+  let rule = styleSheet.ruleFor('body').rule;
+  assert.equal(rule.cssText, 'body { font-size: 200px; }');
   rule = styleSheet.ruleFor('p').rule;
-  assert.equal(rule.cssText, 'display: none');
+  assert.equal(rule.cssText, 'p { display: none; }');
   rule = styleSheet.ruleFor('em').rule;
-  assert.equal(rule.cssText, 'font-weight: bold');
+  assert.equal(rule.cssText, 'em { font-weight: bold; }');
 });
 
 test('rules can be updated', function (assert) {
