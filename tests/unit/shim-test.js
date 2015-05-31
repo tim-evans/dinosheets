@@ -40,17 +40,17 @@ module('StyleSheetShim', {
 });
 
 test('it returns a list of rules for the stylesheet', function (assert) {
-  styleSheet.appendRule('body', {
+  styleSheet.insertRule('body', {
     backgroundColor: 'green'
   });
-  styleSheet.appendRule('p', {
+  styleSheet.insertRule('p', {
     color: 'white'
   });
   assert.equal(styleSheet.rules().length, 2);
 });
 
 test('inserting a rule has the desired effect on the page', function (assert) {
-  styleSheet.appendRule('body', {
+  styleSheet.insertRule('body', {
     fontSize: '200px'
   });
   let styles = getStyles(document.body);
@@ -58,13 +58,13 @@ test('inserting a rule has the desired effect on the page', function (assert) {
 });
 
 test('rules are returned in order of insertion', function (assert) {
-  styleSheet.appendRule('body', {
+  styleSheet.insertRule('body', {
     fontSize: '200px'
   });
-  styleSheet.appendRule('p', {
+  styleSheet.insertRule('p', {
     display: 'none'
   });
-  styleSheet.appendRule('em', {
+  styleSheet.insertRule('em', {
     color: 'green'
   });
 
@@ -75,13 +75,13 @@ test('rules are returned in order of insertion', function (assert) {
 });
 
 test('ruleFor returns the correct rules', function (assert) {
-  styleSheet.appendRule('body', {
+  styleSheet.insertRule('body', {
     fontSize: '200px'
   });
-  styleSheet.appendRule('p', {
+  styleSheet.insertRule('p', {
     display: 'none'
   });
-  styleSheet.appendRule('em', {
+  styleSheet.insertRule('em', {
     fontWeight: 'bold'
   });
 
@@ -94,7 +94,7 @@ test('ruleFor returns the correct rules', function (assert) {
 });
 
 test('rules can be updated', function (assert) {
-  styleSheet.appendRule('body', {
+  styleSheet.insertRule('body', {
     fontSize: '200px'
   });
 
@@ -110,7 +110,7 @@ test('rules can be updated', function (assert) {
 });
 
 test('rules can be deleted', function (assert) {
-  styleSheet.appendRule('body', {
+  styleSheet.insertRule('body', {
     fontSize: '200px'
   });
 
@@ -121,10 +121,10 @@ test('rules can be deleted', function (assert) {
 });
 
 test('toString returns the serialized stylesheet', function (assert) {
-  styleSheet.appendRule('body', {
+  styleSheet.insertRule('body', {
     fontSize: '200px'
   });
-  styleSheet.appendRule('.hello-world', {
+  styleSheet.insertRule('.hello-world', {
     width: '200px',
     height: '100px',
     border: '1px solid'
