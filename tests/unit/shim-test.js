@@ -136,8 +136,8 @@ test('toString returns the serialized stylesheet', function (assert) {
                 '}',
                 '',
                 '.hello-world {',
-                '  border: 1px solid;',
-                '  height: 100px;',
                 '  width: 200px;',
+                '  height: 100px;',
+                '  border: 1px solid;',
                 '}'].join('\n'));
 });
