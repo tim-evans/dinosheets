@@ -87,9 +87,9 @@ test('ruleFor returns the correct rules', function (assert) {
 
   let rule = styleSheet.ruleFor('body').rule;
   assert.equal(cssText(rule), 'font-size: 200px;')
-  rule = styleSheet.ruleFor('p').rule.style;
+  rule = styleSheet.ruleFor('p').rule;
   assert.equal(cssText(rule), 'display: none;');
-  rule = styleSheet.ruleFor('em').rule.style;
+  rule = styleSheet.ruleFor('em').rule;
   assert.equal(cssText(rule), 'font-weight: bold;');
 });
 
