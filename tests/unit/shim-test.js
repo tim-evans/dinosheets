@@ -3,15 +3,6 @@ import StyleSheetShim from 'dinosheets/shim';
 let styleSheet = null;
 let element = null;
 
-function keys(obj) {
-  const keys = [];
-  for (let key in obj) {
-    if (!obj.hasOwnProperty(key)) { continue; }
-    keys.push(key);
-  }
-  return keys;
-}
-
 // Retrieve the computed style of the element
 function getStyles(element) {
   if (document.defaultView && document.defaultView.getComputedStyle) {
@@ -85,12 +76,11 @@ test('ruleFor returns the correct rules', function (assert) {
     fontWeight: 'bold'
   });
 
-  let rule = styleSheet.ruleFor('body').rule;
-  assert.equal(rule.cssText, 'body { font-size: 200px; }',
-               `Keys are ${keys(rule).join(' ')}`);
-  rule = styleSheet.ruleFor('p').rule;
+  let rule = styleSheet.ruleFor('body').rule.style;
+  assert.equal(rule.cssText, 'body { font-size: 200px; }')
+  rule = styleSheet.ruleFor('p').rule.style;
   assert.equal(rule.cssText, 'p { display: none; }');
-  rule = styleSheet.ruleFor('em').rule;
+  rule = styleSheet.ruleFor('em').rule.style;
   assert.equal(rule.cssText, 'em { font-weight: bold; }');
 });
 
