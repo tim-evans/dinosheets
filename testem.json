@@ -6,6 +6,18 @@
       "command": "saucie -b 'chrome' -p 'OS X 10.6' --timeout=540",
       "protocol": "tap"
     },
+    "SL_Firefox": {
+      "command": "saucie -b 'firefox' -v '34' -p 'OS X 10.6' --timeout=540",
+      "protocol": "tap"
+    },
+    "SL_Safari": {
+      "command": "saucie -b 'safari' -v '8' -p 'OS X 10.6' --timeout=540",
+      "protocol": "tap"
+    },
+    "SL_Safari_7": {
+      "command": "saucie -b 'safari' -v '7' -p 'OS X 10.6' --timeout=540",
+      "protocol": "tap"
+    },
     "SL_IE_8": {
       "command": "saucie -b 'internet explorer' -v '8' -p 'Windows XP' --timeout=540",
       "protocol": "tap"
@@ -30,6 +42,9 @@
   "launch_in_ci": [
     "PhantomJS",
     "SL_Chrome",
+    "SL_Safari",
+    "SL_Safari_7",
+    "SL_Firefox",
     "SL_IE_8",
     "SL_IE_9",
     "SL_IE_10",
