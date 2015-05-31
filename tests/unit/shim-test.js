@@ -11,6 +11,14 @@ function getStyles(element) {
   return element.currentStyle;
 };
 
+function cssText(rule) {
+  let style = rule.style.cssText;
+  if (style.charAt(style.length - 1) !== ';') {
+    style = style + ';';
+  }
+  return style.toLowerCase();
+}
+
 module('StyleSheetShim', {
   beforeEach() {
     element = document.createElement('style');
@@ -76,12 +84,12 @@ test('ruleFor returns the correct rules', function (assert) {
     fontWeight: 'bold'
   });
 
-  let rule = styleSheet.ruleFor('body').rule.style;
-  assert.equal(rule.cssText, 'body { font-size: 200px; }')
+  let rule = styleSheet.ruleFor('body').rule;
+  assert.equal(cssText(rule), 'font-size: 200px')
   rule = styleSheet.ruleFor('p').rule.style;
-  assert.equal(rule.cssText, 'p { display: none; }');
+  assert.equal(cssText(rule), 'display: none');
   rule = styleSheet.ruleFor('em').rule.style;
-  assert.equal(rule.cssText, 'em { font-weight: bold; }');
+  assert.equal(cssText(rule), 'font-weight: bold');
 });
 
 test('rules can be updated', function (assert) {
