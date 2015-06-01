@@ -30,7 +30,7 @@ test('it appends a new stylesheet to the dom', function (assert) {
 });
 
 test('it interprets nested styles like SCSS', function (assert) {
-  sheet.rule('body', {
+  sheet.css('body', {
     '.world': {
       '.hello &': {
         color: 'green',
@@ -47,8 +47,8 @@ test('it interprets nested styles like SCSS', function (assert) {
   assert.equal(diff[1].selector, 'body .world.goodbye');
 });
 
-test('it applies the changes to the stylesheet after calling sync', function (assert) {
-  sheet.rule('body', {
+test('it applies the changes to the stylesheet after calling applyStyles', function (assert) {
+  sheet.css('body', {
     '.world': {
       '.hello &': {
         fontSize: '10px'
@@ -58,7 +58,7 @@ test('it applies the changes to the stylesheet after calling sync', function (as
         height: '50px'
       }
     }
-  }).sync();
+  }).applyStyles();
 
   let rule = sheet.styleSheet.ruleFor('.hello body .world').rule;
   assert.equal(cssText(rule), 'font-size: 10px;')
@@ -67,7 +67,7 @@ test('it applies the changes to the stylesheet after calling sync', function (as
 });
 
 test('changes can be discarded', function (assert) {
-  sheet.rule('body', {
+  sheet.css('body', {
     '.world': {
       '.hello &': {
         fontSize: '10px'
