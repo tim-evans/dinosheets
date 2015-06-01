@@ -58,11 +58,30 @@ test('it applies the changes to the stylesheet after calling sync', function (as
         height: '50px'
       }
     }
-  });
+  }).sync();
 
-  sheet.sync();
   let rule = sheet.styleSheet.ruleFor('.hello body .world').rule;
   assert.equal(cssText(rule), 'font-size: 10px;')
   rule = sheet.styleSheet.ruleFor('body .world.goodbye').rule;
   assert.equal(cssText(rule), 'width: 20px; height: 50px;');
+});
+
+test('changes can be discarded', function (assert) {
+  sheet.rule('body', {
+    '.world': {
+      '.hello &': {
+        fontSize: '10px'
+      },
+      '&.goodbye': {
+        width: '20px',
+        height: '50px'
+      }
+    }
+  });
+
+  let diff = sheet.diff();
+  assert.equal(diff.length, 2);
+  sheet.discardChanges();
+  diff = sheet.diff();
+  assert.equal(diff.length, 0);
 });
