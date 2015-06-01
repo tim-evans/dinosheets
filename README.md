@@ -1,4 +1,4 @@
-## Dinosheets [![Build Status](https://travis-ci.org/tim-evans/dinosheets.svg?branch=master)](https://travis-ci.org/tim-evans/dinosheets)
+## Dinosheets [![Build Status](https://travis-ci.org/tim-evans/dinosheets.svg?branch=master)](https://travis-ci.org/tim-evans/dinosheets) [![Code Climate](https://codeclimate.com/github/tim-evans/dinosheets/badges/gpa.svg)](https://codeclimate.com/github/tim-evans/dinosheets)
 
 **Note: this is still a work in progress**
 
