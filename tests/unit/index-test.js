@@ -20,7 +20,6 @@ function cssRules(rule) {
 
 QUnit.assert.contains = function (haystack, needle, message) {
   var actual = haystack.indexOf(needle) > -1;
-  console.log(haystack, needle);
   this.push(actual, actual, needle, message);
 };
 
