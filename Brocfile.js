@@ -13,17 +13,17 @@ var transpile = function (tree) {
     modules: 'amd',
     loose: ['es6.classes', 'es6.modules'],
 
-    // Transforms /index.js files to use their containing directory name
+    // Transforms /dinosheet.js files to use their containing directory name
     getModuleId: function (name) {
       name = pkg.name + '/' + name;
-      return name.replace(/\/index$/, '');
+      return name.replace(/\/dinosheet$/, '');
     },
 
-    // Fix relative imports inside /index's
+    // Fix relative imports inside /dinosheet's
     resolveModuleSource: function (source, filename) {
-      var match = filename.match(/(.+)\/index\.\S+$/i);
+      var match = filename.match(/(.+)\/dinosheet\.\S+$/i);
 
-      // is this an import inside an /index file?
+      // is this an import inside an /dinosheet file?
       if (match) {
         var path = match[1];
         return source
