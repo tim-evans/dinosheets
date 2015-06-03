@@ -1,11 +1,12 @@
-const funnel = require('broccoli-funnel');
-const concat = require('broccoli-concat');
-const mergeTrees = require('broccoli-merge-trees');
-const esTranspiler = require('broccoli-babel-transpiler');
-const env = process.env.ENV;
-const pkg = require('./package.json');
+/* global require, module, process */
+var funnel = require('broccoli-funnel');
+var concat = require('broccoli-concat');
+var mergeTrees = require('broccoli-merge-trees');
+var esTranspiler = require('broccoli-babel-transpiler');
+var env = process.env.ENV;
+var pkg = require('./package.json');
 
-const transpile = function (tree) {
+var transpile = function (tree) {
   return esTranspiler(tree, {
     stage: 0,
     moduleIds: true,
@@ -35,28 +36,28 @@ const transpile = function (tree) {
   });
 };
 
-const js = transpile('lib');
+var js = transpile('lib');
 
-const main = concat(js, {
+var main = concat(js, {
   inputFiles: [
     '**/*.js'
   ],
   outputFile: '/' + pkg.name + '.js'
 });
 
-const trees = [main];
+var trees = [main];
 
 if (env === 'test') {
-  const test = concat(transpile('tests'), {
+  var test = concat(transpile('tests'), {
     inputFiles: [
       '**/*-test.js'
     ],
     outputFile: '/' + pkg.name + '-tests.js'
   });
-  const qunit = funnel('bower_components/qunit/qunit', {
+  var qunit = funnel('bower_components/qunit/qunit', {
     destDir: 'assets'
   });
-  const loader = mergeTrees([
+  var loader = mergeTrees([
     funnel('bower_components/loader.js', {
       destDir: 'assets',
       include: ['loader.js']
@@ -66,7 +67,7 @@ if (env === 'test') {
       include: ['test-loader.js']
     })
   ]);
-  const index = funnel('tests', {
+  var index = funnel('tests', {
     include: ['index.html']
   });
   trees.push(test, qunit, index, loader);
