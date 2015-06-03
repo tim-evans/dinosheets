@@ -85,3 +85,115 @@ test('changes can be discarded', function (assert) {
   diff = sheet.diff();
   assert.equal(diff.length, 0);
 });
+
+test('selectors can be deleted', function (assert) {
+  sheet.css('.tool-tip', {
+    position: 'relative',
+    '.pointer': {
+      position: 'absolute',
+      width: '20px',
+      height: '10px',
+      top: '0px',
+      left: '50%',
+      marginLeft: '-5px'
+    }
+  }).applyStyles();
+
+  debugger;
+  sheet.css('.tool-tip .pointer', null);
+
+  assert.deepEqual(sheet.diff(), [{
+    selector: '.tool-tip .pointer',
+    rules: undefined
+  }]);
+  sheet.applyStyles();
+  let rule = sheet.styleSheet.ruleFor('.tool-tip .pointer');
+  assert.equal(rule, null);
+});
+
+test('rules can be deleted', function (assert) {
+  sheet.css('.tool-tip', {
+    position: 'relative',
+    '.pointer': {
+      position: 'absolute',
+      width: '20px',
+      height: '10px',
+      top: '0px',
+      left: '50%',
+      marginLeft: '-5px'
+    }
+  }).applyStyles();
+
+  sheet.css('.tool-tip .pointer', {
+    marginLeft: null
+  });
+
+  assert.deepEqual(sheet.diff(), [{
+    selector: '.tool-tip .pointer',
+    rules: {
+      marginLeft: null
+    }
+  }]);
+
+  sheet.applyStyles();
+  let rule = sheet.styleSheet.ruleFor('.tool-tip .pointer').rule;
+  assert.equal(cssText(rule), 'position: absolute; width: 20px; height: 10px; top: 0px; left: 50%;');
+});
+
+test('rules can be updated', function (assert) {
+  sheet.css('.tool-tip', {
+    position: 'relative',
+    '.pointer': {
+      position: 'absolute',
+      width: '20px',
+      height: '10px',
+      top: '0px',
+      left: '50%',
+      marginLeft: '-5px'
+    }
+  }).applyStyles();
+
+  sheet.css('.tool-tip .pointer', {
+    width: '10px',
+    height: '20px',
+    top: '50%',
+    left: '-10px',
+    marginLeft: null,
+    marginTop: '-10px'
+  });
+
+  assert.deepEqual(sheet.diff(), [{
+    selector: '.tool-tip .pointer',
+    rules: {
+      width: '10px',
+      height: '20px',
+      top: '50%',
+      left: '-10px',
+      marginLeft: null,
+      marginTop: '-10px'
+    }
+  }]);
+
+  sheet.applyStyles();
+  let rule = sheet.styleSheet.ruleFor('.tool-tip .pointer').rule;
+  assert.equal(cssText(rule), 'position: absolute; width: 10px; height: 20px; top: 50%; left: -10px; margin-top: -10px;');
+});
+
+test('destroying the sheet removes all styles from the dom', function (assert) {
+  sheet.css('.tool-tip', {
+    position: 'relative',
+    '.pointer': {
+      position: 'absolute',
+      width: '20px',
+      height: '10px',
+      top: '0px',
+      left: '50%',
+      marginLeft: '-5px'
+    }
+  }).applyStyles();
+
+  let id = sheet.id;
+  sheet.destroy();
+  assert.equal(document.getElementById(id), null);
+  assert.equal(sheet.element, null);
+});
