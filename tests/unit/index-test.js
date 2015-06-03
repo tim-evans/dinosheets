@@ -19,7 +19,13 @@ function cssRules(rule) {
 }
 
 QUnit.assert.contains = function (haystack, needle, message) {
-  var actual = haystack.indexOf(needle) > -1;
+  var actual = false;
+  for (let i = 0, len = haystack.length; i < len; i++) {
+    if (haystack[i] === needle) {
+      actual = true;
+      break;
+    }
+  }
   this.push(actual, actual, needle, message);
 };
 
@@ -156,7 +162,7 @@ test('rules can be deleted', function (assert) {
   assert.contains(rules, 'height: 10px');
   assert.contains(rules, 'top: 0px');
   assert.contains(rules, 'left: 50%');
-  assert.equal(rules.length, 5);
+  assert.equal(rules.length, 5, cssText(rule));
 });
 
 test('rules can be updated', function (assert) {
