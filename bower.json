@@ -1,8 +1,12 @@
 {
   "name": "dinosheets",
   "dependencies": {
-    "loader.js": "3.2.0"
+    "qunit": "~1.18.0",
+    "loader.js": "3.2.1"
   },
+  "keywords": [
+    "css"
+  ],
   "version": "0.0.1",
   "homepage": "https://github.com/tim-evans/dinosheets",
   "authors": [
