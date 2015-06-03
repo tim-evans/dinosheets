@@ -9,6 +9,21 @@ function cssText(rule) {
   return style.toLowerCase();
 }
 
+function cssRules(rule) {
+  let style = rule.style.cssText;
+  style = style.replace(/\s*$/, '');
+  if (style.charAt(style.length - 1) === ';') {
+    style = style.slice(0, -1);
+  }
+  return style.toLowerCase().split('; ');
+}
+
+QUnit.assert.contains = function (haystack, needle, message) {
+  var actual = haystack.indexOf(needle) > -1;
+  console.log(haystack, needle);
+  this.push(actual, actual, needle, message);
+};
+
 var sheet;
 
 module('DinoSheet', {
@@ -99,7 +114,6 @@ test('selectors can be deleted', function (assert) {
     }
   }).applyStyles();
 
-  debugger;
   sheet.css('.tool-tip .pointer', null);
 
   assert.deepEqual(sheet.diff(), [{
@@ -137,7 +151,13 @@ test('rules can be deleted', function (assert) {
 
   sheet.applyStyles();
   let rule = sheet.styleSheet.ruleFor('.tool-tip .pointer').rule;
-  assert.equal(cssText(rule), 'position: absolute; width: 20px; height: 10px; top: 0px; left: 50%;');
+  let rules = cssRules(rule);
+  assert.contains(rules, 'position: absolute');
+  assert.contains(rules, 'width: 20px');
+  assert.contains(rules, 'height: 10px');
+  assert.contains(rules, 'top: 0px');
+  assert.contains(rules, 'left: 50%');
+  assert.equal(rules.length, 5);
 });
 
 test('rules can be updated', function (assert) {
@@ -176,7 +196,13 @@ test('rules can be updated', function (assert) {
 
   sheet.applyStyles();
   let rule = sheet.styleSheet.ruleFor('.tool-tip .pointer').rule;
-  assert.equal(cssText(rule), 'position: absolute; width: 10px; height: 20px; top: 50%; left: -10px; margin-top: -10px;');
+  let rules = cssRules(rule);
+  assert.contains(rules, 'position: absolute');
+  assert.contains(rules, 'width: 10px');
+  assert.contains(rules, 'height: 20px');
+  assert.contains(rules, 'top: 50%');
+  assert.contains(rules, 'left: -10px');
+  assert.contains(rules, 'margin-top: -10px');
 });
 
 test('destroying the sheet removes all styles from the dom', function (assert) {
