@@ -6,11 +6,11 @@ var esTranspiler = require('broccoli-babel-transpiler');
 var env = process.env.ENV;
 var pkg = require('./package.json');
 
-var transpile = function (tree) {
+var transpile = function (tree, opts) {
   return esTranspiler(tree, {
     stage: 0,
     moduleIds: true,
-    modules: 'amd',
+    modules: opts.modules,
     loose: ['es6.classes', 'es6.modules'],
 
     // Transforms /dinosheet.js files to use their containing directory name
@@ -36,19 +36,17 @@ var transpile = function (tree) {
   });
 };
 
-var js = transpile('lib');
-
-var main = concat(js, {
+var amd = concat(transpile('lib', { modules: 'amd' }), {
   inputFiles: [
     '**/*.js'
   ],
-  outputFile: '/' + pkg.name + '.js'
+  outputFile: '/' + pkg.name + '.amd.js'
 });
 
-var trees = [main];
+var trees = [amd];
 
 if (env === 'test') {
-  var test = concat(transpile('tests'), {
+  var test = concat(transpile('tests', { modules: 'amd' }), {
     inputFiles: [
       '**/*-test.js'
     ],
