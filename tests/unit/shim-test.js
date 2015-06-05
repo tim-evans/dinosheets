@@ -141,3 +141,37 @@ test('toString returns the serialized stylesheet', function (assert) {
                 '  border: 1px solid;',
                 '}'].join('\n'));
 });
+
+test('setting the cssFloat property works', function (assert) {
+  styleSheet.insertRule('body', {
+    cssFloat: 'right'
+  });
+
+  let styles = getStyles(document.body);
+  assert.equal(styles.cssFloat, 'right');
+});
+
+test('selectors with a comma are updateable', function (assert) {
+  styleSheet.insertRule('button, a[role=button]', {
+    textTransform: 'uppercase'
+  });
+
+  let button = document.getElementById('button');
+  let anchor = document.getElementById('button-role');
+
+  let styles = getStyles(button);
+  assert.equal(styles.textTransform, 'uppercase');
+
+  styles = getStyles(anchor);
+  assert.equal(styles.textTransform, 'uppercase');
+
+  styleSheet.updateRule('button, a[role=button]', {
+    textTransform: 'lowercase'
+  });
+
+  styles = getStyles(button);
+  assert.equal(styles.textTransform, 'lowercase');
+
+  styles = getStyles(anchor);
+  assert.equal(styles.textTransform, 'lowercase');
+});
