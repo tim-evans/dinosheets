@@ -175,6 +175,8 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
     };
 
     StyleSheetShim.prototype.insertRule = function insertRule(selector, rules, index) {
+      var _this = this;
+
       var styleSheet = this.styleSheet;
 
       var css = (0, _dinosheetsUtils.toCSS)(rules);
@@ -190,11 +192,30 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
           styleSheet.insertRule('' + selector + ' { ' + css + ' }', index);
         } else {
           styleSheet.addRule(selector, css, index);
+
+          if (this.ruleFor(selector).rule.selectorText.toLowerCase() !== selector.toLowerCase()) {
+            delete this.indexes[selector];
+            delete this.styles[selector];
+            this._splitsSelectors = true;
+            (0, _dinosheetsUtils.forEach)((0, _dinosheetsUtils.map)(selector.split(','), _dinosheetsUtils.trim), function (selector) {
+              _this.indexes[selector] = index++;
+              _this.styles[selector] = rules;
+            });
+          }
         }
       }
     };
 
     StyleSheetShim.prototype.updateRule = function updateRule(selector, rules) {
+      var _this2 = this;
+
+      if (this._splitsSelectors && selector.indexOf(',') !== -1) {
+        (0, _dinosheetsUtils.forEach)((0, _dinosheetsUtils.map)(selector.split(','), _dinosheetsUtils.trim), function (selector) {
+          _this2.updateRule(selector, rules);
+        });
+        return;
+      }
+
       var _ruleFor = this.ruleFor(selector);
 
       var rule = _ruleFor.rule;
@@ -204,6 +225,18 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
           return;
         }
         var value = rules[key];
+
+        // Fix applying float styles for IE8 - IE9
+        if (key === 'float' || key === 'cssFloat') {
+          if (typeof rule.style.cssFloat !== 'undefined') {
+            key = 'cssFloat';
+          } else if (typeof rule.style.styleFloat !== 'undefined') {
+            key = 'styleFloat';
+          } else {
+            key = 'float';
+          }
+        }
+
         if (value == null) {
           delete this.styles[selector][key];
           if (rule.style.removeProperty) {
@@ -227,6 +260,15 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
     };
 
     StyleSheetShim.prototype.deleteRule = function deleteRule(selector) {
+      var _this3 = this;
+
+      if (this._splitsSelectors && selector.indexOf(',') !== -1) {
+        (0, _dinosheetsUtils.forEach)((0, _dinosheetsUtils.map)(selector.split(','), _dinosheetsUtils.trim), function (selector) {
+          _this3.deleteRule(selector);
+        });
+        return;
+      }
+
       var styleSheet = this.styleSheet;
 
       var _ruleFor2 = this.ruleFor(selector);
@@ -277,10 +319,12 @@ define("dinosheets/utils", ["exports"], function (exports) {
   exports.__esModule = true;
   exports.copy = copy;
   exports.filter = filter;
+  exports.map = map;
   exports.reduce = reduce;
   exports.forEach = forEach;
   exports.uniq = uniq;
   exports.dasherize = dasherize;
+  exports.trim = trim;
   exports.toCSS = toCSS;
   var keys = Object.keys;
 
@@ -340,6 +384,19 @@ define("dinosheets/utils", ["exports"], function (exports) {
       }
     }
     return seive;
+  }
+
+  function map(array, lambda) {
+    if (array.map) {
+      return array.map(lambda);
+    }
+
+    var acc = [];
+    for (var i = 0, len = array.length; i < len; i++) {
+      acc[i] = lambda(array[i], i, array);
+    }
+
+    return acc;
   }
 
   function reduce(array, lambda, seed) {
@@ -405,6 +462,15 @@ define("dinosheets/utils", ["exports"], function (exports) {
     }).replace(/[ _]/g, "-");
   }
 
+  var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+
+  function trim(str) {
+    if (str.trim) {
+      return str.trim();
+    }
+    return str.replace(rtrim, "");
+  }
+
   function toCSS(rules) {
     var format = arguments[1] === undefined ? { tab: "", newline: "" } : arguments[1];
 
@@ -414,7 +480,11 @@ define("dinosheets/utils", ["exports"], function (exports) {
 
     var css = [];
     forEach(keys(rules), function (key) {
-      css.push("" + format.tab + "" + dasherize(key) + ": " + rules[key] + ";");
+      var value = rules[key];
+      if (key === "cssFloat") {
+        key = "float";
+      }
+      css.push("" + format.tab + "" + dasherize(key) + ": " + value + ";");
     });
 
     return css.join(format.newline) + format.newline;
