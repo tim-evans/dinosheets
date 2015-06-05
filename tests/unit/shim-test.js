@@ -149,26 +149,14 @@ test('setting / updating the cssFloat property works', function (assert) {
 
   // Check both cssFloat and styleFloat
   let styles = getStyles(document.body);
-  if (typeof styles.cssFloat !== 'undefined') {
-    assert.equal(styles.cssFloat, 'right',
-                 'cssFloat === "right"\n' + cssText(styleSheet.ruleFor('body').rule));
-  } else {
-    assert.equal(styles.styleFloat, 'right',
-                 'styleFloat === "right"\n' + cssText(styleSheet.ruleFor('body').rule));
-  }
+  let rule = styleSheet.ruleFor('body').rule;
+  assert.equal(cssText(rule), 'float: right;');
 
   styleSheet.updateRule('body', {
     cssFloat: 'left'
   });
 
-  styles = getStyles(document.body);
-  if (typeof styles.cssFloat !== 'undefined') {
-    assert.equal(styles.cssFloat, 'left',
-                 'cssFloat === "left"\n' + cssText(styleSheet.ruleFor('body').rule));
-  } else {
-    assert.equal(styles.styleFloat, 'left',
-                 'styleFloat === "left"\n' + cssText(styleSheet.ruleFor('body').rule));
-  }
+  assert.equal(cssText(rule), 'float: left;');
 });
 
 test('selectors with a comma are updateable', function (assert) {
@@ -180,7 +168,7 @@ test('selectors with a comma are updateable', function (assert) {
   let anchor = document.getElementById('button-class');
 
   let styles = getStyles(button);
-  let rule = styleSheet.ruleFor('.button, .button').rule;
+  let rule = styleSheet.ruleFor('button, .button').rule;
   assert.equal(styles.textTransform, 'uppercase',
                rule.selectorText + ' {\n' + cssText(rule));
 
