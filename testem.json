@@ -1,6 +1,6 @@
 {
   "framework": "qunit",
-  "test_page": "build/index.html",
+  "test_page": "build/index.html?hidepassed",
   "launchers": {
     "SL_Chrome": {
       "command": "saucie -b 'chrome' -p 'OS X 10.6' --timeout=540 -n Chrome",
