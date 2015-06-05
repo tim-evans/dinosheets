@@ -142,7 +142,7 @@ test('toString returns the serialized stylesheet', function (assert) {
                 '}'].join('\n'));
 });
 
-test('setting the cssFloat property works', function (assert) {
+test('setting / updating the cssFloat property works', function (assert) {
   styleSheet.insertRule('body', {
     cssFloat: 'right'
   });
@@ -151,20 +151,33 @@ test('setting the cssFloat property works', function (assert) {
   let styles = getStyles(document.body);
   if (typeof styles.cssFloat !== 'undefined') {
     assert.equal(styles.cssFloat, 'right',
-                 'cssFloat === "right"' + cssText(styleSheet.ruleFor('body').rule));
+                 'cssFloat === "right"\n' + cssText(styleSheet.ruleFor('body').rule));
   } else {
     assert.equal(styles.styleFloat, 'right',
-                 'styleFloat === "right"' + cssText(styleSheet.ruleFor('body').rule));
+                 'styleFloat === "right"\n' + cssText(styleSheet.ruleFor('body').rule));
+  }
+
+  styleSheet.updateRule('body', {
+    cssFloat: 'left'
+  });
+
+  styles = getStyles(document.body);
+  if (typeof styles.cssFloat !== 'undefined') {
+    assert.equal(styles.cssFloat, 'left',
+                 'cssFloat === "left"\n' + cssText(styleSheet.ruleFor('body').rule));
+  } else {
+    assert.equal(styles.styleFloat, 'left',
+                 'styleFloat === "left"\n' + cssText(styleSheet.ruleFor('body').rule));
   }
 });
 
 test('selectors with a comma are updateable', function (assert) {
-  styleSheet.insertRule('button, a[role=button]', {
+  styleSheet.insertRule('button, .button', {
     textTransform: 'uppercase'
   });
 
   let button = document.getElementById('button');
-  let anchor = document.getElementById('button-role');
+  let anchor = document.getElementById('button-class');
 
   let styles = getStyles(button);
   assert.equal(styles.textTransform, 'uppercase',
@@ -172,9 +185,9 @@ test('selectors with a comma are updateable', function (assert) {
 
   styles = getStyles(anchor);
   assert.equal(styles.textTransform, 'uppercase',
-               cssText(styleSheet.ruleFor('a[role=button]').rule));
+               cssText(styleSheet.ruleFor('.button').rule));
 
-  styleSheet.updateRule('button, a[role=button]', {
+  styleSheet.updateRule('button, .button', {
     textTransform: 'lowercase'
   });
 
@@ -184,5 +197,5 @@ test('selectors with a comma are updateable', function (assert) {
 
   styles = getStyles(anchor);
   assert.equal(styles.textTransform, 'lowercase',
-               cssText(styleSheet.ruleFor('a[role=button]').rule));
+               cssText(styleSheet.ruleFor('.button').rule));
 });
