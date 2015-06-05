@@ -147,8 +147,9 @@ test('setting the cssFloat property works', function (assert) {
     cssFloat: 'right'
   });
 
+  // Check both cssFloat and styleFloat
   let styles = getStyles(document.body);
-  assert.equal(styles.cssFloat, 'right');
+  assert.equal(styles.cssFloat || styles.styleFloat, 'right');
 });
 
 test('selectors with a comma are updateable', function (assert) {
