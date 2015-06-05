@@ -1,10 +1,10 @@
 {
   "name": "dinosheets",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Dynamic Stylesheets for browsers",
   "main": "dist/dinosheets.js",
   "scripts": {
-    "start": "broccoli serve",
+    "start": "ENV=test broccoli serve",
     "prepublish": "rm -rf dist && broccoli build dist",
     "test": "rm -rf build && ENV=test broccoli build build; testem ci --port 8080"
   },
