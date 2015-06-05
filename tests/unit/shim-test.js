@@ -168,23 +168,18 @@ test('selectors with a comma are updateable', function (assert) {
   let anchor = document.getElementById('button-class');
 
   let styles = getStyles(button);
-  let rule = styleSheet.ruleFor('button, .button').rule;
-  assert.equal(styles.textTransform, 'uppercase',
-               rule.selectorText + ' {\n' + cssText(rule));
+  assert.equal(styles.textTransform, 'uppercase');
 
   styles = getStyles(anchor);
-  assert.equal(styles.textTransform, 'uppercase',
-               rule.selectorText + ' {\n' + cssText(rule));
+  assert.equal(styles.textTransform, 'uppercase');
 
   styleSheet.updateRule('button, .button', {
     textTransform: 'lowercase'
   });
 
   styles = getStyles(button);
-  assert.equal(styles.textTransform, 'lowercase',
-               rule.selectorText + ' {\n' + cssText(rule));
+  assert.equal(styles.textTransform, 'lowercase');
 
   styles = getStyles(anchor);
-  assert.equal(styles.textTransform, 'lowercase',
-               rule.selectorText + ' {\n' + cssText(rule));
+  assert.equal(styles.textTransform, 'lowercase');
 });
