@@ -7,7 +7,7 @@
       "protocol": "tap"
     },
     "SL_Android": {
-      "command": "saucie -b 'android' -dn 'Android Emulator' -do 'portrait' -v '5.1' -p 'Linux'",
+      "command": "saucie -b 'android' -dn 'Samsung Galaxy Nexus Emulator' -do 'portrait' -v '5.1' -p 'Linux'",
       "protocol": "tap"
     },
     "SL_Firefox": {
