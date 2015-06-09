@@ -183,3 +183,66 @@ test('selectors with a comma are updateable', function (assert) {
   styles = getStyles(anchor);
   assert.equal(styles.textTransform, 'lowercase');
 });
+
+test('unsupported CSS extensions are rejected', function (assert) {
+  styleSheet.insertRule('button', {
+    MsGridColumn: 1,
+    MozAppearance: 'none',
+    WebkitAppearance: 'none'
+  });
+
+  let rule = styleSheet.ruleFor('button').rule;
+  let text = [];
+  if (styleSheet.supportsRule('MsGridColumn')) {
+    text.push('-ms-grid-column: 1;');
+  }
+  if (styleSheet.supportsRule('WebkitAppearance')) {
+    text.push('-webkit-appearance: none;');
+  }
+  if (styleSheet.supportsRule('MozAppearance')) {
+    text.push('-moz-appearance: none;');
+  }
+
+  assert.equal(cssText(rule), text.join(' '));
+});
+
+test('CSS extensions are humped properly', function (assert) {
+  styleSheet.insertRule('button', {
+    MsGridColumn: 1,
+    MozAppearance: 'none',
+    WebkitAppearance: 'none'
+  });
+
+  let rule = styleSheet.ruleFor('button').rule;
+  let text = [];
+  if (styleSheet.supportsRule('MsGridColumn')) {
+    text.push('-ms-grid-column: 1;');
+  }
+  if (styleSheet.supportsRule('WebkitAppearance')) {
+    text.push('-webkit-appearance: none;');
+  }
+  if (styleSheet.supportsRule('MozAppearance')) {
+    text.push('-moz-appearance: none;');
+  }
+
+  assert.equal(cssText(rule), text.join(' '));
+
+  styleSheet.updateRule('button', {
+    MsGridColumn: 2,
+    MozAppearance: 'button',
+    WebkitAppearance: 'button'
+  });
+
+  text = [];
+  if (styleSheet.supportsRule('MsGridColumn')) {
+    text.push('-ms-grid-column: 2;');
+  }
+  if (styleSheet.supportsRule('WebkitAppearance')) {
+    text.push('-webkit-appearance: button;');
+  }
+  if (styleSheet.supportsRule('MozAppearance')) {
+    text.push('-moz-appearance: button;');
+  }
+
+  assert.equal(cssText(rule), text.join(' '));
+});
