@@ -7,7 +7,7 @@
       "protocol": "tap"
     },
     "SL_Android": {
-      "command": "saucie -dn 'Android Emulator' -v '5.1' -p 'Linux' --timeout=540 -n 'Android'",
+      "command": "saucie -b 'android' -dn 'Android Emulator' -do 'portrait' -v '5.1' -p 'Linux'",
       "protocol": "tap"
     },
     "SL_Firefox": {
@@ -23,11 +23,11 @@
       "protocol": "tap"
     },
     "SL_iOS8": {
-      "command": "saucie -v '8.2' -p 'OS X 10.10' -dn 'iPhone Simulator' --timeout=540 -n 'iOS8 Safari'",
+      "command": "saucie -b 'iphone' -dn 'iPhone Simulator' -do 'portrait' -v '8.2' -p 'OS X 10.10'",
       "protocol": "tap"
     },
     "SL_iOS7": {
-      "command": "saucie -v '7.1' -p 'OS X 10.10' -dn 'iPhone Simulator' --timeout=540 -n 'iOS8 Safari'",
+      "command": "saucie -b 'iphone' -dn 'iPhone Simulator' -do 'portrait' -v '7.1' -p 'OS X 10.10'",
       "protocol": "tap"
     },
     "SL_IE_8": {
@@ -54,15 +54,15 @@
   "launch_in_ci": [
     "PhantomJS",
     "SL_Chrome",
-    "SL_Android",
     "SL_Safari",
     "SL_Safari_7",
-    "SL_iOS8",
-    "SL_iOS7",
     "SL_Firefox",
     "SL_IE_8",
     "SL_IE_9",
     "SL_IE_10",
-    "SL_IE_11"
+    "SL_IE_11",
+    "SL_iOS8",
+    "SL_iOS7",
+    "SL_Android"
   ]
 }
