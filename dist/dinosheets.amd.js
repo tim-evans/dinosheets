@@ -86,9 +86,9 @@ define('dinosheets', ['exports', 'module', 'dinosheets/shim', 'dinosheets/utils'
       }
       var styleSheet = this.styleSheet;
 
-      (0, _dinosheetsUtils.forEach)(this.diff(), function (_ref) {
-        var selector = _ref.selector;
-        var rules = _ref.rules;
+      (0, _dinosheetsUtils.forEach)(this.diff(), function (diff) {
+        var selector = diff.selector;
+        var rules = diff.rules;
 
         if (rules == null) {
           styleSheet.deleteRule(selector);

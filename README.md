@@ -1,7 +1,5 @@
 ## Dinosheets [![Build Status](https://travis-ci.org/tim-evans/dinosheets.svg?branch=master)](https://travis-ci.org/tim-evans/dinosheets) [![Code Climate](https://codeclimate.com/github/tim-evans/dinosheets/badges/gpa.svg)](https://codeclimate.com/github/tim-evans/dinosheets)
 
-**Note: this is still a work in progress**
-
 Dinosheets is a dynamic stylesheet library that provides a Sass / SCSS like experience with rule definitions and mutations. The library is speedy and integrates well with libraries that have run loops (like Ember).
 
 There is a single method for inserting, updating, and deleting CSS rules called `css`. When the rules should by applied to the stylesheet, calling `applyStyles` will efficiently update the styles.
