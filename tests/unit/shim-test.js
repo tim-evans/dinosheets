@@ -186,6 +186,7 @@ test('selectors with a comma are updateable', function (assert) {
 
 test('unsupported CSS extensions are rejected', function (assert) {
   styleSheet.insertRule('button', {
+    MsFilter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)',
     MsGridColumn: 1,
     MozAppearance: 'none',
     WebkitAppearance: 'none'
@@ -193,6 +194,9 @@ test('unsupported CSS extensions are rejected', function (assert) {
 
   let rule = styleSheet.ruleFor('button').rule;
   let text = [];
+  if (styleSheet.supportsRule('MsFilter')) {
+    text.push('-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);');
+  }
   if (styleSheet.supportsRule('MsGridColumn')) {
     text.push('-ms-grid-column: 1;');
   }
@@ -208,6 +212,7 @@ test('unsupported CSS extensions are rejected', function (assert) {
 
 test('CSS extensions are humped properly', function (assert) {
   styleSheet.insertRule('button', {
+    MsFilter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=100)',
     MsGridColumn: 1,
     MozAppearance: 'none',
     WebkitAppearance: 'none'
@@ -215,6 +220,9 @@ test('CSS extensions are humped properly', function (assert) {
 
   let rule = styleSheet.ruleFor('button').rule;
   let text = [];
+  if (styleSheet.supportsRule('MsFilter')) {
+    text.push('-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);');
+  }
   if (styleSheet.supportsRule('MsGridColumn')) {
     text.push('-ms-grid-column: 1;');
   }
@@ -228,12 +236,16 @@ test('CSS extensions are humped properly', function (assert) {
   assert.equal(cssText(rule), text.join(' '));
 
   styleSheet.updateRule('button', {
+    MsFilter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)',
     MsGridColumn: 2,
     MozAppearance: 'button',
     WebkitAppearance: 'button'
   });
 
   text = [];
+  if (styleSheet.supportsRule('MsFilter')) {
+    text.push('-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);');
+  }
   if (styleSheet.supportsRule('MsGridColumn')) {
     text.push('-ms-grid-column: 2;');
   }
