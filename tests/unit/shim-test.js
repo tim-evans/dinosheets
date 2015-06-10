@@ -185,75 +185,79 @@ test('selectors with a comma are updateable', function (assert) {
 });
 
 test('unsupported CSS extensions are rejected', function (assert) {
-  styleSheet.insertRule('button', {
+  let rules = {
     MsFilter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)',
     MsGridColumn: 1,
     MozAppearance: 'none',
     WebkitAppearance: 'none'
-  });
+  };
+
+  styleSheet.insertRule('button', rules);
 
   let rule = styleSheet.ruleFor('button').rule;
   let text = [];
-  if (styleSheet.supportsRule('MsFilter')) {
-    text.push('-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);');
+  if (styleSheet.canApplyRule('MsFilter', rules.MsFilter)) {
+    text.push(`-ms-filter: ${rules.MsFilter};`);
   }
-  if (styleSheet.supportsRule('MsGridColumn')) {
-    text.push('-ms-grid-column: 1;');
+  if (styleSheet.canApplyRule('MsGridColumn', rules.MsGridColumn)) {
+    text.push(`-ms-grid-column: ${rules.MsGridColumn};`);
   }
-  if (styleSheet.supportsRule('WebkitAppearance')) {
-    text.push('-webkit-appearance: none;');
+  if (styleSheet.canApplyRule('WebkitAppearance', rules.WebkitAppearance)) {
+    text.push(`-webkit-appearance: ${rules.WebkitAppearance};`);
   }
-  if (styleSheet.supportsRule('MozAppearance')) {
-    text.push('-moz-appearance: none;');
+  if (styleSheet.canApplyRule('MozAppearance', rules.MozAppearance)) {
+    text.push(`-moz-appearance: ${rules.MozAppearance};`);
   }
 
   assert.equal(cssText(rule), text.join(' '));
 });
 
 test('CSS extensions are humped properly', function (assert) {
-  styleSheet.insertRule('button', {
+  let rules = {
     MsFilter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=100)',
     MsGridColumn: 1,
     MozAppearance: 'none',
     WebkitAppearance: 'none'
-  });
+  };
+  styleSheet.insertRule('button', rules);
 
   let rule = styleSheet.ruleFor('button').rule;
   let text = [];
-  if (styleSheet.supportsRule('MsFilter')) {
-    text.push('-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);');
+  if (styleSheet.canApplyRule('MsFilter', rules.MsFilter)) {
+    text.push(`-ms-filter: ${rules.MsFilter};`);
   }
-  if (styleSheet.supportsRule('MsGridColumn')) {
-    text.push('-ms-grid-column: 1;');
+  if (styleSheet.canApplyRule('MsGridColumn', rules.MsGridColumn)) {
+    text.push(`-ms-grid-column: ${rules.MsGridColumn};`);
   }
-  if (styleSheet.supportsRule('WebkitAppearance')) {
-    text.push('-webkit-appearance: none;');
+  if (styleSheet.canApplyRule('WebkitAppearance', rules.WebkitAppearance)) {
+    text.push(`-webkit-appearance: ${rules.WebkitAppearance};`);
   }
-  if (styleSheet.supportsRule('MozAppearance')) {
-    text.push('-moz-appearance: none;');
+  if (styleSheet.canApplyRule('MozAppearance', rules.MozAppearance)) {
+    text.push(`-moz-appearance: ${rules.MozAppearance};`);
   }
 
   assert.equal(cssText(rule), text.join(' '));
 
-  styleSheet.updateRule('button', {
+  rules = {
     MsFilter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)',
     MsGridColumn: 2,
     MozAppearance: 'button',
     WebkitAppearance: 'button'
-  });
+  };
+  styleSheet.updateRule('button', rules);
 
   text = [];
-  if (styleSheet.supportsRule('MsFilter')) {
-    text.push('-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);');
+  if (styleSheet.canApplyRule('MsFilter', rules.MsFilter)) {
+    text.push(`-ms-filter: ${rules.MsFilter};`);
   }
-  if (styleSheet.supportsRule('MsGridColumn')) {
-    text.push('-ms-grid-column: 2;');
+  if (styleSheet.canApplyRule('MsGridColumn', rules.MsGridColumn)) {
+    text.push(`-ms-grid-column: ${rules.MsGridColumn};`);
   }
-  if (styleSheet.supportsRule('WebkitAppearance')) {
-    text.push('-webkit-appearance: button;');
+  if (styleSheet.canApplyRule('WebkitAppearance', rules.WebkitAppearance)) {
+    text.push(`-webkit-appearance: ${rules.WebkitAppearance};`);
   }
-  if (styleSheet.supportsRule('MozAppearance')) {
-    text.push('-moz-appearance: button;');
+  if (styleSheet.canApplyRule('MozAppearance', rules.MozAppearance)) {
+    text.push(`-moz-appearance: ${rules.MozAppearance};`);
   }
 
   assert.equal(cssText(rule), text.join(' '));
