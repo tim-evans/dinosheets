@@ -30,10 +30,6 @@
       "command": "saucie -b 'iphone' -dn 'iPhone Simulator' -do 'portrait' -v '7.1' -p 'OS X 10.10'",
       "protocol": "tap"
     },
-    "SL_IE_8": {
-      "command": "saucie -b 'internet explorer' -v '8' -p 'Windows XP' --timeout=540 -n 'IE 8'",
-      "protocol": "tap"
-    },
     "SL_IE_9": {
       "command": "saucie -b 'internet explorer' -v '9' -p 'Windows 7' --timeout=540 -n 'IE 9'",
       "protocol": "tap"
@@ -57,12 +53,10 @@
     "SL_Safari",
     "SL_Safari_7",
     "SL_Firefox",
-    "SL_IE_8",
     "SL_IE_9",
     "SL_IE_10",
     "SL_IE_11",
     "SL_iOS8",
-    "SL_iOS7",
-    "SL_Android"
+    "SL_iOS7"
   ]
 }
