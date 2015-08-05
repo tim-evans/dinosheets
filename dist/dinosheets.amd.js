@@ -11,7 +11,7 @@ define('dinosheets', ['exports', 'module', 'dinosheets/shim', 'dinosheets/utils'
 
   var DinoSheet = (function () {
     function DinoSheet() {
-      var media = arguments[0] === undefined ? 'all' : arguments[0];
+      var media = arguments.length <= 0 || arguments[0] === undefined ? 'all' : arguments[0];
 
       _classCallCheck(this, DinoSheet);
 
@@ -67,7 +67,7 @@ define('dinosheets', ['exports', 'module', 'dinosheets/shim', 'dinosheets/utils'
           if (rule.indexOf('&') !== -1) {
             rule = rule.replace(/&/g, selector);
           } else {
-            rule = '' + selector + ' ' + rule;
+            rule = selector + ' ' + rule;
           }
           this.css(rule, value);
         }
@@ -76,7 +76,7 @@ define('dinosheets', ['exports', 'module', 'dinosheets/shim', 'dinosheets/utils'
     };
 
     DinoSheet.prototype.discardChanges = function discardChanges() {
-      this.bufferedStyles = (0, _dinosheetsUtils.copy)(this.activeStyles);
+      this.bufferedStyles = _dinosheetsUtils.copy(this.activeStyles);
       return this;
     };
 
@@ -86,7 +86,7 @@ define('dinosheets', ['exports', 'module', 'dinosheets/shim', 'dinosheets/utils'
       }
       var styleSheet = this.styleSheet;
 
-      (0, _dinosheetsUtils.forEach)(this.diff(), function (diff) {
+      _dinosheetsUtils.forEach(this.diff(), function (diff) {
         var selector = diff.selector;
         var rules = diff.rules;
 
@@ -97,7 +97,7 @@ define('dinosheets', ['exports', 'module', 'dinosheets/shim', 'dinosheets/utils'
         }
       });
 
-      this.activeStyles = (0, _dinosheetsUtils.copy)(this.bufferedStyles);
+      this.activeStyles = _dinosheetsUtils.copy(this.bufferedStyles);
     };
 
     DinoSheet.prototype.diff = function diff() {
@@ -105,18 +105,18 @@ define('dinosheets', ['exports', 'module', 'dinosheets/shim', 'dinosheets/utils'
       var bufferedStyles = this.bufferedStyles;
 
       var changes = [];
-      var selectors = (0, _dinosheetsUtils.uniq)((0, _dinosheetsUtils.keys)(activeStyles).concat((0, _dinosheetsUtils.keys)(bufferedStyles)));
-      (0, _dinosheetsUtils.forEach)(selectors, function (selector) {
+      var selectors = _dinosheetsUtils.uniq(_dinosheetsUtils.keys(activeStyles).concat(_dinosheetsUtils.keys(bufferedStyles)));
+      _dinosheetsUtils.forEach(selectors, function (selector) {
         var activeRules = activeStyles[selector];
         var bufferedRules = bufferedStyles[selector];
         if (activeRules == null || bufferedRules == null) {
           changes.push({ selector: selector, rules: bufferedRules });
         } else {
-          var rules = (0, _dinosheetsUtils.uniq)((0, _dinosheetsUtils.keys)(bufferedRules).concat((0, _dinosheetsUtils.keys)(activeRules)));
-          var changedProperties = (0, _dinosheetsUtils.filter)(rules, function (rule) {
+          var rules = _dinosheetsUtils.uniq(_dinosheetsUtils.keys(bufferedRules).concat(_dinosheetsUtils.keys(activeRules)));
+          var changedProperties = _dinosheetsUtils.filter(rules, function (rule) {
             return activeRules[rule] !== bufferedRules[rule];
           });
-          var changedRules = (0, _dinosheetsUtils.reduce)(changedProperties, function (rules, rule) {
+          var changedRules = _dinosheetsUtils.reduce(changedProperties, function (rules, rule) {
             rules[rule] = bufferedRules[rule] || null;
             return rules;
           }, {});
@@ -146,6 +146,21 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+  var sheet;
+  function testerSheet() {
+    if (sheet) {
+      return sheet;
+    }
+
+    var element = document.createElement('style');
+    var head = document.getElementsByTagName('head')[0] || document.documentElement;
+    element.type = 'text/css';
+    head.appendChild(element);
+
+    return sheet = document.styleSheets[document.styleSheets.length - 1];
+  }
+  var supportedCssRules = {};
+
   var StyleSheetShim = (function () {
     function StyleSheetShim(styleSheet) {
       _classCallCheck(this, StyleSheetShim);
@@ -174,12 +189,51 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
       };
     };
 
+    StyleSheetShim.prototype.canApplyRule = function canApplyRule(rule, value) {
+      if (supportedCssRules.hasOwnProperty(rule)) {
+        return supportedCssRules[rule];
+      }
+
+      var styleSheet = testerSheet();
+      var selector = '#dinosheet---tester---selector';
+      var css = _dinosheetsUtils.dasherize(rule) + ': ' + value + ';';
+
+      if (styleSheet.insertRule) {
+        styleSheet.insertRule(selector + ' { ' + css + ' }', 0);
+      } else {
+        styleSheet.addRule(selector, css, 0);
+      }
+
+      var rules = sheet.cssRules || sheet.rules || [];
+      if (_dinosheetsUtils.cssText(rules[0]).length > selector.length + css.length) {
+        supportedCssRules[rule] = true;
+      } else {
+        supportedCssRules[rule] = false;
+      }
+
+      if (styleSheet.deleteRule) {
+        styleSheet.deleteRule(selector, 0);
+      } else {
+        styleSheet.removeRule(0);
+      }
+      return supportedCssRules[rule];
+    };
+
     StyleSheetShim.prototype.insertRule = function insertRule(selector, rules, index) {
       var _this = this;
 
       var styleSheet = this.styleSheet;
 
-      var css = (0, _dinosheetsUtils.toCSS)(rules);
+      // Lint out all rules that can't be applied
+      rules = _dinosheetsUtils.reduce(_dinosheetsUtils.keys(rules), function (E, rule) {
+        var value = rules[rule];
+        if (_this.canApplyRule(rule, value)) {
+          E[rule] = value;
+        }
+        return E;
+      }, {});
+
+      var css = _dinosheetsUtils.toCSS(rules);
 
       if (index == null) {
         index = this.rules().length;
@@ -189,7 +243,7 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
         this.indexes[selector] = index;
         this.styles[selector] = rules;
         if (styleSheet.insertRule) {
-          styleSheet.insertRule('' + selector + ' { ' + css + ' }', index);
+          styleSheet.insertRule(selector + ' { ' + css + ' }', index);
         } else {
           styleSheet.addRule(selector, css, index);
 
@@ -197,7 +251,7 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
             delete this.indexes[selector];
             delete this.styles[selector];
             this._splitsSelectors = true;
-            (0, _dinosheetsUtils.forEach)((0, _dinosheetsUtils.map)(selector.split(','), _dinosheetsUtils.trim), function (selector) {
+            _dinosheetsUtils.forEach(_dinosheetsUtils.map(selector.split(','), _dinosheetsUtils.trim), function (selector) {
               _this.indexes[selector] = index++;
               _this.styles[selector] = rules;
             });
@@ -210,11 +264,20 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
       var _this2 = this;
 
       if (this._splitsSelectors && selector.indexOf(',') !== -1) {
-        (0, _dinosheetsUtils.forEach)((0, _dinosheetsUtils.map)(selector.split(','), _dinosheetsUtils.trim), function (selector) {
+        _dinosheetsUtils.forEach(_dinosheetsUtils.map(selector.split(','), _dinosheetsUtils.trim), function (selector) {
           _this2.updateRule(selector, rules);
         });
         return;
       }
+
+      // Lint out all rules that can't be applied
+      rules = _dinosheetsUtils.reduce(_dinosheetsUtils.keys(rules), function (E, rule) {
+        var value = rules[rule];
+        if (_this2.canApplyRule(rule, value)) {
+          E[rule] = value;
+        }
+        return E;
+      }, {});
 
       var _ruleFor = this.ruleFor(selector);
 
@@ -222,25 +285,18 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
 
       for (var key in rules) {
         if (!rules.hasOwnProperty(key)) {
-          return;
+          continue;
         }
         var value = rules[key];
-
-        // Fix applying float styles for IE8 - IE9
-        if (key === 'float' || key === 'cssFloat') {
-          if (typeof rule.style.cssFloat !== 'undefined') {
-            key = 'cssFloat';
-          } else if (typeof rule.style.styleFloat !== 'undefined') {
-            key = 'styleFloat';
-          } else {
-            key = 'float';
-          }
+        key = _dinosheetsUtils.camelize(key);
+        if (key == null) {
+          continue;
         }
 
         if (value == null) {
           delete this.styles[selector][key];
           if (rule.style.removeProperty) {
-            rule.style.removeProperty((0, _dinosheetsUtils.dasherize)(key));
+            rule.style.removeProperty(_dinosheetsUtils.dasherize(key));
           } else {
             rule.style[key] = null;
           }
@@ -263,7 +319,7 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
       var _this3 = this;
 
       if (this._splitsSelectors && selector.indexOf(',') !== -1) {
-        (0, _dinosheetsUtils.forEach)((0, _dinosheetsUtils.map)(selector.split(','), _dinosheetsUtils.trim), function (selector) {
+        _dinosheetsUtils.forEach(_dinosheetsUtils.map(selector.split(','), _dinosheetsUtils.trim), function (selector) {
           _this3.deleteRule(selector);
         });
         return;
@@ -303,7 +359,7 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
         }
         var selector = style[0];
         var rules = style[1];
-        css.push(['' + selector + ' {\n', (0, _dinosheetsUtils.toCSS)(rules, { tab: '  ', newline: '\n' }), '}'].join(''));
+        css.push([selector + ' {\n', _dinosheetsUtils.toCSS(rules, { tab: '  ', newline: '\n' }), '}'].join(''));
       }
       return css.join('\n\n');
     };
@@ -325,6 +381,8 @@ define("dinosheets/utils", ["exports"], function (exports) {
   exports.uniq = uniq;
   exports.dasherize = dasherize;
   exports.trim = trim;
+  exports.camelize = camelize;
+  exports.cssText = cssText;
   exports.toCSS = toCSS;
   var keys = Object.keys;
 
@@ -361,7 +419,7 @@ define("dinosheets/utils", ["exports"], function (exports) {
         continue;
       }
       var value = O[key];
-      if (typeof value === "object") {
+      if (typeof value === 'object') {
         dup[key] = copy(value);
       } else {
         dup[key] = value;
@@ -457,9 +515,19 @@ define("dinosheets/utils", ["exports"], function (exports) {
   }
 
   function dasherize(str) {
-    return str.replace(/([a-z\d])([A-Z])/g, function (_, a, b) {
-      return a + "_" + b.toLowerCase();
-    }).replace(/[ _]/g, "-");
+    if (str === 'cssFloat') {
+      return 'float';
+    }
+
+    var dashedRule = str.replace(/([a-z\d])([A-Z])/g, function (_, a, b) {
+      return a + '_' + b.toLowerCase();
+    }).replace(/[ _]/g, '-').replace(/^([A-Z])/, function (match) {
+      return '-' + match.toLowerCase();
+    }).replace(/^(moz|ms|webkit)/, function (match) {
+      return '-' + match;
+    });
+
+    return dashedRule;
   }
 
   var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
@@ -468,23 +536,65 @@ define("dinosheets/utils", ["exports"], function (exports) {
     if (str.trim) {
       return str.trim();
     }
-    return str.replace(rtrim, "");
+    return str.replace(rtrim, '');
   }
 
+  function camelize(str) {
+    // Fix applying float styles for IE8 - IE9
+    if (str === 'float' || str === 'cssFloat') {
+      if (typeof document.body.style.cssFloat !== 'undefined') {
+        return 'cssFloat';
+      } else if (typeof document.body.style.styleFloat !== 'undefined') {
+        return 'styleFloat';
+      }
+    }
+
+    if (str === 'MsFilter') {
+      return 'filter';
+    }
+
+    var camelizedRule = str.replace(/(\-|_|\.|\s)+(.)?/g, function (_, __, chr) {
+      return chr ? chr.toUpperCase() : '';
+    }).replace(/^([A-Z])/, function (match) {
+      return match.toLowerCase();
+    });
+
+    if (typeof document.body.style[camelizedRule] !== 'undefined') {
+      return camelizedRule;
+    }
+    camelizedRule = camelizedRule.replace(/^([a-z])/, function (match) {
+      return match.toUpperCase();
+    });
+
+    if (typeof document.body.style[camelizedRule] !== 'undefined') {
+      return camelizedRule;
+    }
+  }
+
+  function cssText(rule) {
+    if (rule == null) {
+      return '';
+    }
+    var style = rule.cssText;
+    style = style.replace(/\s*$/, '');
+    if (style.charAt(style.length - 1) !== ';') {
+      style = style + ';';
+    }
+    return style.toLowerCase();
+  }
+
+  ;
+
   function toCSS(rules) {
-    var format = arguments[1] === undefined ? { tab: "", newline: "" } : arguments[1];
+    var format = arguments.length <= 1 || arguments[1] === undefined ? { tab: '', newline: '' } : arguments[1];
 
     if (rules == null) {
-      return "";
+      return '';
     }
 
     var css = [];
     forEach(keys(rules), function (key) {
-      var value = rules[key];
-      if (key === "cssFloat") {
-        key = "float";
-      }
-      css.push("" + format.tab + "" + dasherize(key) + ": " + value + ";");
+      css.push("" + format.tab + dasherize(key) + ": " + rules[key] + ";");
     });
 
     return css.join(format.newline) + format.newline;

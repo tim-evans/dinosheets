@@ -194,7 +194,7 @@ test('unsupported CSS extensions are rejected', function (assert) {
 
   styleSheet.insertRule('button', rules);
 
-  let rule = styleSheet.ruleFor('button').rule;
+  let { rule } = styleSheet.ruleFor('button');
   let text = [];
   if (styleSheet.canApplyRule('MsFilter', rules.MsFilter)) {
     text.push(`-ms-filter: ${rules.MsFilter};`);
@@ -221,7 +221,7 @@ test('CSS extensions are humped properly', function (assert) {
   };
   styleSheet.insertRule('button', rules);
 
-  let rule = styleSheet.ruleFor('button').rule;
+  let { rule } = styleSheet.ruleFor('button');
   let text = [];
   if (styleSheet.canApplyRule('MsFilter', rules.MsFilter)) {
     text.push(`-ms-filter: ${rules.MsFilter};`);
