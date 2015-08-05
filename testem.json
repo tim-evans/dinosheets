@@ -53,8 +53,16 @@
   ],
   "launch_in_ci": [
     "PhantomJS",
+    "SL_Chrome",
+    "SL_Safari",
+    "SL_Safari_7",
+    "SL_Firefox",
     "SL_IE_8",
     "SL_IE_9",
+    "SL_IE_10",
+    "SL_IE_11",
+    "SL_iOS8",
+    "SL_iOS7",
     "SL_Android"
   ]
 }
