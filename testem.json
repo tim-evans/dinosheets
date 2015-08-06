@@ -3,7 +3,7 @@
   "test_page": "build/index.html?hidepassed",
   "launchers": {
     "SL_Chrome": {
-      "command": "saucie -b 'chrome' -p 'OS X 1.10' --timeout=540 -n Chrome",
+      "command": "saucie -b 'chrome' -v '43.0' -p 'OS X 1.10' --timeout=540 -n Chrome",
       "protocol": "tap"
     },
     "SL_Android": {
@@ -11,7 +11,7 @@
       "protocol": "tap"
     },
     "SL_Firefox": {
-      "command": "saucie -b 'firefox' -p 'OS X 1.10' --timeout=540 -n 'Firefox 34'",
+      "command": "saucie -b 'firefox' -v '34' -p 'OS X 1.10' --timeout=540 -n 'Firefox 34'",
       "protocol": "tap"
     },
     "SL_Safari": {
