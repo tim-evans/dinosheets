@@ -3,15 +3,15 @@
   "test_page": "build/index.html?hidepassed",
   "launchers": {
     "SL_Chrome": {
-      "command": "saucie -b 'chrome' -v '43.0' -p 'OS X 1.10' --timeout=540 -n Chrome",
+      "command": "saucie -b 'chrome' --timeout=540 -n Chrome",
       "protocol": "tap"
     },
     "SL_Android": {
-      "command": "saucie -b 'android' -dn 'Samsung Galaxy Nexus Emulator' -do 'portrait' -v '5.1' -p 'Linux'",
+      "command": "saucie -b 'android' -dn 'Samsung Galaxy Nexus Emulator' -do 'portrait' -v '4.4' -p 'Linux'",
       "protocol": "tap"
     },
     "SL_Firefox": {
-      "command": "saucie -b 'firefox' -v '34' -p 'OS X 1.10' --timeout=540 -n 'Firefox 34'",
+      "command": "saucie -b 'firefox' -v '34' --timeout=540 -n 'Firefox 34'",
       "protocol": "tap"
     },
     "SL_Safari": {
@@ -57,6 +57,7 @@
     "SL_IE_10",
     "SL_IE_11",
     "SL_iOS8",
-    "SL_iOS7"
+    "SL_iOS7",
+    "Android"
   ]
 }
