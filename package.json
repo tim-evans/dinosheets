@@ -25,7 +25,7 @@
     "broccoli-concat": "^0.0.13",
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "^0.2.1",
-    "saucie": "^0.1.4",
+    "saucie": "^0.1.5",
     "testem": "^0.8.3"
   }
 }
