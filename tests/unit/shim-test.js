@@ -1,4 +1,5 @@
 import StyleSheetShim from 'dinosheets/shim';
+import supports from 'dinosheets/supports';
 
 let styleSheet = null;
 let element = null;
@@ -196,16 +197,16 @@ test('unsupported CSS extensions are rejected', function (assert) {
 
   let { rule } = styleSheet.ruleFor('button');
   let text = [];
-  if (styleSheet.canApplyRule('MsFilter', rules.MsFilter)) {
+  if (supports('MsFilter', rules.MsFilter)) {
     text.push(`-ms-filter: ${rules.MsFilter};`);
   }
-  if (styleSheet.canApplyRule('MsGridColumn', rules.MsGridColumn)) {
+  if (supports('MsGridColumn', rules.MsGridColumn)) {
     text.push(`-ms-grid-column: ${rules.MsGridColumn};`);
   }
-  if (styleSheet.canApplyRule('WebkitAppearance', rules.WebkitAppearance)) {
+  if (supports('WebkitAppearance', rules.WebkitAppearance)) {
     text.push(`-webkit-appearance: ${rules.WebkitAppearance};`);
   }
-  if (styleSheet.canApplyRule('MozAppearance', rules.MozAppearance)) {
+  if (supports('MozAppearance', rules.MozAppearance)) {
     text.push(`-moz-appearance: ${rules.MozAppearance};`);
   }
 
@@ -223,16 +224,16 @@ test('CSS extensions are humped properly', function (assert) {
 
   let { rule } = styleSheet.ruleFor('button');
   let text = [];
-  if (styleSheet.canApplyRule('MsFilter', rules.MsFilter)) {
+  if (supports('MsFilter', rules.MsFilter)) {
     text.push(`-ms-filter: ${rules.MsFilter};`);
   }
-  if (styleSheet.canApplyRule('MsGridColumn', rules.MsGridColumn)) {
+  if (supports('MsGridColumn', rules.MsGridColumn)) {
     text.push(`-ms-grid-column: ${rules.MsGridColumn};`);
   }
-  if (styleSheet.canApplyRule('WebkitAppearance', rules.WebkitAppearance)) {
+  if (supports('WebkitAppearance', rules.WebkitAppearance)) {
     text.push(`-webkit-appearance: ${rules.WebkitAppearance};`);
   }
-  if (styleSheet.canApplyRule('MozAppearance', rules.MozAppearance)) {
+  if (supports('MozAppearance', rules.MozAppearance)) {
     text.push(`-moz-appearance: ${rules.MozAppearance};`);
   }
 
@@ -247,16 +248,16 @@ test('CSS extensions are humped properly', function (assert) {
   styleSheet.updateRule('button', rules);
 
   text = [];
-  if (styleSheet.canApplyRule('MsFilter', rules.MsFilter)) {
+  if (supports('MsFilter', rules.MsFilter)) {
     text.push(`-ms-filter: ${rules.MsFilter};`);
   }
-  if (styleSheet.canApplyRule('MsGridColumn', rules.MsGridColumn)) {
+  if (supports('MsGridColumn', rules.MsGridColumn)) {
     text.push(`-ms-grid-column: ${rules.MsGridColumn};`);
   }
-  if (styleSheet.canApplyRule('WebkitAppearance', rules.WebkitAppearance)) {
+  if (supports('WebkitAppearance', rules.WebkitAppearance)) {
     text.push(`-webkit-appearance: ${rules.WebkitAppearance};`);
   }
-  if (styleSheet.canApplyRule('MozAppearance', rules.MozAppearance)) {
+  if (supports('MozAppearance', rules.MozAppearance)) {
     text.push(`-moz-appearance: ${rules.MozAppearance};`);
   }
 
