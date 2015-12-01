@@ -226,6 +226,8 @@ test('CSS extensions are humped properly', function (assert) {
 
   if (!styleSheet.ruleFor('button')) {
     window.styleSheet = styleSheet;
+    window.supports = supports;
+    window.rules = rules;
     window.done = done;
     return;
   }
