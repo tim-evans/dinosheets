@@ -223,10 +223,13 @@ test('CSS extensions are humped properly', function (assert) {
   styleSheet.insertRule('button', rules);
 
   var done = assert.async();
-  window.styleSheet = styleSheet;
 
-  setTimeout(function () {
-    try {
+  if (!styleSheet.ruleFor('button')) {
+    window.styleSheet = styleSheet;
+    window.done = done;
+    return;
+  }
+
   let { rule } = styleSheet.ruleFor('button');
   let text = [];
   if (supports('MsFilter', rules.MsFilter)) {
@@ -267,8 +270,4 @@ test('CSS extensions are humped properly', function (assert) {
   }
 
   assert.equal(cssText(rule), text.join(' '));
-    } finally {
-      done();
-    }
-  }, 5000);
 });
