@@ -270,4 +270,5 @@ test('CSS extensions are humped properly', function (assert) {
   }
 
   assert.equal(cssText(rule), text.join(' '));
+  done();
 });
