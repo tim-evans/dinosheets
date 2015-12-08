@@ -141,25 +141,14 @@ define('dinosheets', ['exports', 'module', 'dinosheets/shim', 'dinosheets/utils'
 
   module.exports = DinoSheet;
 });
-define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (exports, module, _dinosheetsUtils) {
+define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils', 'dinosheets/supports'], function (exports, module, _dinosheetsUtils, _dinosheetsSupports) {
   'use strict';
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-  var sheet;
-  function testerSheet() {
-    if (sheet) {
-      return sheet;
-    }
-
-    var element = document.createElement('style');
-    var head = document.getElementsByTagName('head')[0] || document.documentElement;
-    element.type = 'text/css';
-    head.appendChild(element);
-
-    return sheet = document.styleSheets[document.styleSheets.length - 1];
-  }
-  var supportedCssRules = {};
+  var _supports = _interopRequireDefault(_dinosheetsSupports);
 
   var StyleSheetShim = (function () {
     function StyleSheetShim(styleSheet) {
@@ -189,36 +178,6 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
       };
     };
 
-    StyleSheetShim.prototype.canApplyRule = function canApplyRule(rule, value) {
-      if (supportedCssRules.hasOwnProperty(rule)) {
-        return supportedCssRules[rule];
-      }
-
-      var styleSheet = testerSheet();
-      var selector = '#dinosheet---tester---selector';
-      var css = _dinosheetsUtils.dasherize(rule) + ': ' + value + ';';
-
-      if (styleSheet.insertRule) {
-        styleSheet.insertRule(selector + ' { ' + css + ' }', 0);
-      } else {
-        styleSheet.addRule(selector, css, 0);
-      }
-
-      var rules = sheet.cssRules || sheet.rules || [];
-      if (_dinosheetsUtils.cssText(rules[0]).length > selector.length + css.length) {
-        supportedCssRules[rule] = true;
-      } else {
-        supportedCssRules[rule] = false;
-      }
-
-      if (styleSheet.deleteRule) {
-        styleSheet.deleteRule(selector, 0);
-      } else {
-        styleSheet.removeRule(0);
-      }
-      return supportedCssRules[rule];
-    };
-
     StyleSheetShim.prototype.insertRule = function insertRule(selector, rules, index) {
       var _this = this;
 
@@ -227,7 +186,7 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
       // Lint out all rules that can't be applied
       rules = _dinosheetsUtils.reduce(_dinosheetsUtils.keys(rules), function (E, rule) {
         var value = rules[rule];
-        if (_this.canApplyRule(rule, value)) {
+        if (_supports['default'](rule, value)) {
           E[rule] = value;
         }
         return E;
@@ -273,7 +232,7 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
       // Lint out all rules that can't be applied
       rules = _dinosheetsUtils.reduce(_dinosheetsUtils.keys(rules), function (E, rule) {
         var value = rules[rule];
-        if (_this2.canApplyRule(rule, value)) {
+        if (_supports['default'](rule, value)) {
           E[rule] = value;
         }
         return E;
@@ -368,6 +327,38 @@ define('dinosheets/shim', ['exports', 'module', 'dinosheets/utils'], function (e
   })();
 
   module.exports = StyleSheetShim;
+});
+define('dinosheets/supports', ['exports', 'module', 'dinosheets/utils'], function (exports, module, _dinosheetsUtils) {
+  'use strict';
+
+  function test(css, fn) {
+    var element = document.createElement('div');
+    var body = document.body;
+
+    element.style.cssText = css;
+    body.appendChild(element);
+
+    var result = fn(element);
+
+    element.parentNode.removeChild(element);
+
+    return !!result;
+  }
+
+  var cache = {};
+
+  module.exports = function (rule, value) {
+    // Coerce numbers into strings
+    value += '';
+    var style = _dinosheetsUtils.dasherize(rule) + ': ' + value + ';';
+    if (cache[rule] != null) {
+      return cache[rule];
+    }
+
+    return cache[rule] = test(style, function (el) {
+      return _dinosheetsUtils.cssText(el.style).indexOf(_dinosheetsUtils.dasherize(rule)) >= 0;
+    });
+  };
 });
 define("dinosheets/utils", ["exports"], function (exports) {
   "use strict";
@@ -577,7 +568,7 @@ define("dinosheets/utils", ["exports"], function (exports) {
     }
     var style = rule.cssText;
     style = style.replace(/\s*$/, '');
-    if (style.charAt(style.length - 1) !== ';') {
+    if (style.length > 0 && style.charAt(style.length - 1) !== ';') {
       style = style + ';';
     }
     return style.toLowerCase();
